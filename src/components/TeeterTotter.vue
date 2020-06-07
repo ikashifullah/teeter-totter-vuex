@@ -6,7 +6,8 @@
         v-for="wObject in weighObjects"
         :key="wObject.id"
         :id="wObject.id"
-        :right="wObject.right" />
+        :right="wObject.right"
+        :size="wObject.size" />
       <Scale />
     </div>
     <div>
@@ -40,6 +41,7 @@ export default {
       gameOver: false,
       weighObjects: [],
       pauseOrResume: 'Pause',
+      total: 0,
     };
   },
   computed: mapState(['timer', 'scaleBarRotatedByDeg', 'scaleBarCenter']),
@@ -59,7 +61,6 @@ export default {
   },
   methods: {
     onLeftOrRightArrowKeyPress(event) {
-      console.log(`event.keyCode: ${event.keyCode}`);
       if (event.keyCode === 37) {
         this.$store.commit('toggleLeftArrowKeyPressed');
       }
@@ -77,10 +78,28 @@ export default {
       this.weighObjects.push({
         id: this.weighObjects.length + 1,
         right: true,
+        size: Math.ceil(Math.random() * 10),
       });
       this.weighObjects.push({
         id: this.weighObjects.length + 1,
         right: false,
+        size: Math.ceil(Math.random() * 10),
+      });
+      this.weighObjects.push({
+        id: this.weighObjects.length + 1,
+        right: false,
+        size: Math.ceil(Math.random() * 10),
+      });
+      this.weighObjects.push({
+        id: this.weighObjects.length + 1,
+        right: false,
+        size: Math.ceil(Math.random() * 10),
+      });
+      this.weighObjects.forEach((weigh) => {
+        if (weigh.right === false) {
+          this.total += weigh.size;
+        }
+        return this.total;
       });
       this.startTimer();
     },
@@ -88,7 +107,7 @@ export default {
       if (this.isPaused) {
         clearInterval(this.timerHandle);
       }
-      if (this.scaleBarRotatedByDeg > 30 || this.scaleBarRotatedByDeg < -30) {
+      if (this.scaleBarRotatedByDeg > 30 || this.scaleBarRotatedByDeg < -30 || this.total >= 20) {
         this.gameOver = true;
         clearInterval(this.timerHandle);
         this.weighObjects = [];

@@ -39,6 +39,7 @@ export default {
   props: {
     id: Number,
     right: Boolean,
+    size: Number,
   },
   data() {
     const shapeId = Math.round(Math.random() * 2);
@@ -50,7 +51,7 @@ export default {
     } else {
       shape = 'triangle';
     }
-    const mass = Math.ceil(Math.random() * 10);
+    const mass = this.size;
     return {
       mass,
       shape,
