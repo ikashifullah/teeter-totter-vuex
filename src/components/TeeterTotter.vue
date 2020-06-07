@@ -2,6 +2,11 @@
   <div class="hello">
     <div class="game-height game-width d-inline-block">
       <div class="space-above-scale"></div>
+      <Shape
+        v-for="wObject in weighObjects"
+        :key="wObject.id"
+        :id="wObject.id"
+        :right="wObject.right" />
       <div v-if="gameOver" class="game-over">
         <h3>Game Over</h3>
         <div>Refresh page to Play again</div>
@@ -17,9 +22,13 @@
 
 <script>
 import { mapState } from 'vuex';
+import Shape from './Shape.vue';
 
 export default {
   name: 'TeeterTotter',
+  components: {
+    Shape,
+  },
   data() {
     return {
       timerHandle: null,
