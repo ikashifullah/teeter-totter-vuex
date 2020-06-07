@@ -26,7 +26,7 @@
     'transform-origin':
       (scaleBarCenter.x - leftOffset) + 'px ' + (scaleBarCenter.y - topOffset) + 'px'
     }">
-    <span class="shape-text">{{mass}}kg</span>
+    <span class="shape-text" :style="{ top: top + '%' }">{{mass}}kg</span>
   </div>
 </template>
 
@@ -60,6 +60,7 @@ export default {
       leftOffset: 0,
       topOffset: 0,
       motion: 0,
+      top: 0,
       hasHitTheBarScale: false,
     };
   },
@@ -93,6 +94,7 @@ export default {
   created() {
     this.color = this.lastShapeColor === 'brown' ? 'red' : 'brown';
     this.height = this.shape === 'triangle' ? this.height * 2 : this.height;
+    this.top = this.shape === 'triangle' ? (0.5 * this.height) * 2 : 0.5 * this.height;
     this.$store.commit('setLastShapeColor', this.color);
     this.leftOffset = this.right
       ? this.scaleBarCenter.x + Math.round(Math.random() * 250) - this.width
@@ -135,5 +137,7 @@ export default {
 }
 .shape-text {
   color: #fff;
+  background-color: rgba(0, 0, 0, 0.7);
+  position: relative;
 }
 </style>
