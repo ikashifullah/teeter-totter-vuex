@@ -11,9 +11,11 @@
       <Scale />
     </div>
     <div>
+      <span class="left-total">Left Total: <strong>{{leftTotal}}</strong></span>
       <button class="pause-btn" @click="togglePause">
         {{pauseOrResume}}
       </button>
+      <span class="right-total">Right Total: <strong>{{rightTotal}}</strong></span>
     </div>
     <div v-if="gameOver" class="game-over">
       <h3>Game Over</h3>
@@ -41,7 +43,8 @@ export default {
       gameOver: false,
       weighObjects: [],
       pauseOrResume: 'Pause',
-      total: 0,
+      leftTotal: 0,
+      rightTotal: 0,
     };
   },
   computed: mapState(['timer', 'scaleBarRotatedByDeg', 'scaleBarCenter']),
@@ -97,9 +100,11 @@ export default {
       });
       this.weighObjects.forEach((weigh) => {
         if (weigh.right === false) {
-          this.total += weigh.size;
+          this.leftTotal += weigh.size;
+        } else {
+          this.rightTotal += weigh.size;
         }
-        return this.total;
+        return true;
       });
       this.startTimer();
     },
@@ -107,7 +112,8 @@ export default {
       if (this.isPaused) {
         clearInterval(this.timerHandle);
       }
-      if (this.scaleBarRotatedByDeg > 30 || this.scaleBarRotatedByDeg < -30 || this.total >= 20) {
+      if (this.scaleBarRotatedByDeg > 30 || this.scaleBarRotatedByDeg < -30
+        || this.leftTotal >= 20) {
         this.gameOver = true;
         clearInterval(this.timerHandle);
         this.weighObjects = [];
@@ -160,5 +166,11 @@ export default {
   bottom: 0;
   opacity: 0.9;
   font-size: 50px;
+}
+.left-total {
+  margin-right: 100px;
+}
+.right-total {
+  margin-left: 30px;
 }
 </style>
