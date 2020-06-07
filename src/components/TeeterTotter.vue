@@ -8,7 +8,7 @@
       </div>
     </div>
     <div>
-      <button class="pause-btn">
+      <button class="pause-btn" @click="togglePause">
         {{pauseOrResume}}
       </button>
     </div>
@@ -16,16 +16,80 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'TeeterTotter',
-  props: {
-    msg: String,
-  },
   data() {
     return {
+      timerHandle: null,
       gameOver: false,
+      weighObjects: [],
       pauseOrResume: 'Pause',
     };
+  },
+  computed: mapState(['timer', 'scaleBarRotatedByDeg', 'scaleBarCenter']),
+  created() {
+    window.addEventListener('keydown', this.onLeftOrRightArrowKeyPress);
+  },
+  mounted() {
+    this.startGame();
+  },
+  beforeDestroy() {
+    window.removeEventListener('keydown', this.onLeftOrRightArrowKeyPress);
+  },
+  watch: {
+    timer() {
+      this.endGame();
+    },
+  },
+  methods: {
+    onLeftOrRightArrowKeyPress(event) {
+      console.log(`event.keyCode: ${event.keyCode}`);
+      if (event.keyCode === 37) {
+        this.$store.commit('toggleLeftArrowKeyPressed');
+      }
+      if (event.keyCode === 39) {
+        this.$store.commit('toggleRightArrowKeyPressed');
+      }
+    },
+    startTimer() {
+      const self = this;
+      this.timerHandle = setInterval(() => {
+        self.$store.commit('incrementTimer');
+      }, 10);
+    },
+    startGame() {
+      this.weighObjects.push({
+        id: this.weighObjects.length + 1,
+        right: true,
+      });
+      this.weighObjects.push({
+        id: this.weighObjects.length + 1,
+        right: false,
+      });
+      this.startTimer();
+    },
+    endGame() {
+      if (this.isPaused) {
+        clearInterval(this.timerHandle);
+      }
+      if (this.scaleBarRotatedByDeg > 30 || this.scaleBarRotatedByDeg < -30) {
+        this.gameOver = true;
+        clearInterval(this.timerHandle);
+        this.weighObjects = [];
+      }
+    },
+    resumePlay() {
+      this.startTimer();
+    },
+    togglePause() {
+      this.isPaused = !this.isPaused;
+      this.pauseOrResume = !this.isPaused ? 'Pause' : 'Play';
+      if (!this.isPaused) {
+        this.resumePlay();
+      }
+    },
   },
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <h1>Teeter Totter Vuex</h1>
-    <TeeterTotter msg="Welcome to Your Vue.js App"/>
+    <h1>Teeter Totter Simulation (Vuex)</h1>
+    <TeeterTotter />
   </div>
 </template>
 
