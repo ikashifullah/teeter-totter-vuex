@@ -2,10 +2,15 @@
   <div class="hello">
     <div class="game-height game-width d-inline-block">
       <div class="space-above-scale"></div>
-      <div v-if="gameOver" style="color: orange; margin-top: 80px;">
+      <div v-if="gameOver" class="game-over">
         <h3>Game Over</h3>
         <div>Refresh page to Play again</div>
       </div>
+    </div>
+    <div>
+      <button class="pause-btn">
+        {{pauseOrResume}}
+      </button>
     </div>
   </div>
 </template>
@@ -15,6 +20,12 @@ export default {
   name: 'TeeterTotter',
   props: {
     msg: String,
+  },
+  data() {
+    return {
+      gameOver: false,
+      pauseOrResume: 'Pause',
+    };
   },
 };
 </script>
@@ -32,5 +43,15 @@ export default {
 }
 .d-inline-block {
   display: inline-block;
+}
+.pause-btn {
+  background-color: teal;
+  color: white;
+  font-size: 2em;
+  border-radius: 3px;
+}
+.game-over {
+  color: red;
+  margin-top: 80px;
 }
 </style>
