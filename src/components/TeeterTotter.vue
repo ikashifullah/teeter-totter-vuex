@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div>
     <div class="game-height game-width d-inline-block">
       <div class="space-above-scale"></div>
       <Shape
@@ -7,15 +7,17 @@
         :key="wObject.id"
         :id="wObject.id"
         :right="wObject.right" />
-      <div v-if="gameOver" class="game-over">
-        <h3>Game Over</h3>
-        <div>Refresh page to Play again</div>
-      </div>
+      <Scale />
     </div>
     <div>
       <button class="pause-btn" @click="togglePause">
         {{pauseOrResume}}
       </button>
+    </div>
+    <div v-if="gameOver" class="game-over">
+      <h3>Game Over</h3>
+      <div>Refresh page to Play again</div>
+      <button @click="replay" class="pause-btn">Replay</button>
     </div>
   </div>
 </template>
@@ -23,15 +25,18 @@
 <script>
 import { mapState } from 'vuex';
 import Shape from './Shape.vue';
+import Scale from './Scale.vue';
 
 export default {
   name: 'TeeterTotter',
   components: {
     Shape,
+    Scale,
   },
   data() {
     return {
-      timerHandle: null,
+      timerHandle: '',
+      isPaused: false,
       gameOver: false,
       weighObjects: [],
       pauseOrResume: 'Pause',
@@ -94,10 +99,13 @@ export default {
     },
     togglePause() {
       this.isPaused = !this.isPaused;
-      this.pauseOrResume = !this.isPaused ? 'Pause' : 'Play';
+      this.pauseOrResume = !this.isPaused ? 'Pause' : 'Continue';
       if (!this.isPaused) {
         this.resumePlay();
       }
+    },
+    replay() {
+      return window.location.reload();
     },
   },
 };
@@ -109,7 +117,7 @@ export default {
 }
 .game-height {
   height: 500px;
-  background-color: lightgrey;
+  background-color: #f2f2f2;
 }
 .game-width {
   width: 500px;
@@ -124,7 +132,14 @@ export default {
   border-radius: 3px;
 }
 .game-over {
+  width: 100%;
+  background: #ffffff;
   color: red;
-  margin-top: 80px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  opacity: 0.9;
+  font-size: 50px;
 }
 </style>

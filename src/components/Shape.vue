@@ -26,7 +26,7 @@
     'transform-origin':
       (scaleBarCenter.x - leftOffset) + 'px ' + (scaleBarCenter.y - topOffset) + 'px'
     }">
-  {{mass}}kg
+    <span class="shape-text">{{mass}}kg</span>
   </div>
 </template>
 
@@ -54,7 +54,7 @@ export default {
     return {
       mass,
       shape,
-      color: 'blue',
+      color: 'brown',
       width: mass * 5,
       height: mass * 5,
       leftOffset: 0,
@@ -91,7 +91,7 @@ export default {
     'lastShapeColor',
   ]),
   created() {
-    this.color = this.lastShapeColor === 'blue' ? 'red' : 'blue';
+    this.color = this.lastShapeColor === 'brown' ? 'red' : 'brown';
     this.height = this.shape === 'triangle' ? this.height * 2 : this.height;
     this.$store.commit('setLastShapeColor', this.color);
     this.leftOffset = this.right
@@ -132,5 +132,8 @@ export default {
 }
 .circle {
   border-radius: 50%;
+}
+.shape-text {
+  color: #fff;
 }
 </style>

@@ -15,11 +15,11 @@ export default new Vuex.Store({
     motionOnRight: 0,
     isLeftKeyPressed: false,
     isRightKeyPressed: false,
-    lastShapeColor: 'blue',
+    lastShapeColor: 'brown',
   },
   mutations: {
     incrementTimer(state) {
-      state.timer += state.timer + 1;
+      state.timer += 1;
     },
     toggleLeftArrowKeyPressed(state) {
       state.isLeftKeyPressed = !state.isLeftKeyPressed;
